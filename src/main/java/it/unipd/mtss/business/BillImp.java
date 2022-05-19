@@ -14,6 +14,8 @@ import java.util.List;
 public class BillImp implements Bill {
     public double getOrderPrice(List<EItem> itemsOrdered, User user) throws BillException {
         double tot = 0.0;
+        int countProcessor = 0;
+        double minProcessor = Double.MAX_VALUE;
 
         if(itemsOrdered == null) {
             throw new BillException("Items ordered list cannot be null");
@@ -26,8 +28,19 @@ public class BillImp implements Bill {
         }
 
         for(EItem item : itemsOrdered) {
+            if(item.getItemType() == EItem.item.Processor){
+                countProcessor++;
+                if(item.getPrice() < minProcessor){
+                    minProcessor = item.getPrice();
+                }
+            }
             // totale articoli in un elenco [issue #1]
             tot += item.getPrice();
+        }
+
+        // sconto 50% sui processori [issue #2]
+        if(countProcessor > 5){
+            tot -= (minProcessor/2);
         }
 
         return tot;

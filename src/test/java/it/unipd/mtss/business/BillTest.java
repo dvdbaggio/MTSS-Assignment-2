@@ -71,6 +71,29 @@ public class BillTest {
             assertEquals("Items list cannot contain a null value", e.getMessage());
         }
     }
+
+    @Test
+    public void testOrderPrice_MoreThanFiveProcessor() throws BillException {
+        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i3-540", 298.00));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-5 5600X", 263.95));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-5 4500", 141.29));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i7-12700K", 176.69));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-7 5800X", 444.44));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i5-12600KF", 334.87));
+
+        assertEquals(1588.59, bill.getOrderPrice(itemsOrdered, user), 1e-2);
+    }
+
+    @Test
+    public void testOrderPrice_FiveOrLessProcessor() throws BillException {
+        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i3-540", 298.00));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-5 5600X", 263.95));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-5 4500", 141.29));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i7-12700K", 176.69));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-7 5800X", 444.44));
+
+        assertEquals(1324.37, bill.getOrderPrice(itemsOrdered, user), 1e-8);
+    }
 }
 
 
