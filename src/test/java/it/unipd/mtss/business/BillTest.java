@@ -74,25 +74,25 @@ public class BillTest {
 
     @Test
     public void testOrderPrice_MoreThanFiveProcessor() throws BillException {
-        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i3-540", 298.00));
-        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-5 5600X", 263.95));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i3-540", 198.00));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-5 5600X", 100.00));
         itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-5 4500", 141.29));
         itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i7-12700K", 176.69));
-        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-7 5800X", 444.44));
-        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i5-12600KF", 334.87));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-7 5800X", 144.44));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i5-12600KF", 134.87));
 
-        assertEquals(1588.59, bill.getOrderPrice(itemsOrdered, user), 1e-2);
+        assertEquals(845.29, bill.getOrderPrice(itemsOrdered, user), 1e-2);
     }
 
     @Test
     public void testOrderPrice_FiveOrLessProcessor() throws BillException {
-        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i3-540", 298.00));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i3-540", 198.00));
         itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-5 5600X", 263.95));
         itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-5 4500", 141.29));
         itemsOrdered.add(new EItem(EItem.item.Processor, "Intel Core i7-12700K", 176.69));
-        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-7 5800X", 444.44));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-7 5800X", 144.44));
 
-        assertEquals(1324.37, bill.getOrderPrice(itemsOrdered, user), 1e-8);
+        assertEquals(924.37, bill.getOrderPrice(itemsOrdered, user), 1e-8);
     }
 
     @Test
@@ -159,14 +159,30 @@ public class BillTest {
         // verifica che sconti il processore, regali un mouse, e infine sottragga il prezzo del prodotto più economico tra tutti
         // in questo caso è il mouse
         for(int i=0; i!=11; i++){
-            itemsOrdered.add(new EItem(EItem.item.Mouse, "ASUS ROG", i + 20));  //255 - 275
-            itemsOrdered.add(new EItem(EItem.item.Keyboard, "Logitech", i + 30)); //385
+            itemsOrdered.add(new EItem(EItem.item.Mouse, "ASUS ROG", i + 20));
+            itemsOrdered.add(new EItem(EItem.item.Keyboard, "Logitech", i + 30));
         }
         for(int i=0; i<6; i++){
-            itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-7 5800X", i + 56)); //295 - 351
+            itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-7 5800X", i + 56));
         }
 
         assertEquals(943, bill.getOrderPrice(itemsOrdered, user), 1e-2);
+    }
+
+    @Test
+    public void testOrderPrice_Discount10() throws BillException {
+        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel", 500.00));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD", 600.00));
+
+        assertEquals(990, bill.getOrderPrice(itemsOrdered, user), 1e-2);
+    }
+
+    @Test
+    public void testOrderPrice_NotDiscount10() throws BillException {
+        itemsOrdered.add(new EItem(EItem.item.Processor, "Intel", 500.00));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD", 500.00));
+
+        assertEquals(1000, bill.getOrderPrice(itemsOrdered, user), 1e-2);
     }
 }
 

@@ -79,6 +79,11 @@ public class BillImp implements Bill {
             tot -= Math.min(Math.min(Math.min(minKeyboard, minMouse), minMotherboard), minProcessor);
         }
 
+        // Sconto 10% [issue #5]
+        if(tot > 1000){
+            tot = tot - (tot*0.1);
+        }
+
         return tot;
     }
 }
