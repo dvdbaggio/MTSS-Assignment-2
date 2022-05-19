@@ -125,6 +125,49 @@ public class BillTest {
 
         assertEquals(576.12, bill.getOrderPrice(itemsOrdered, user), 1e-2);
     }
+
+    @Test
+    public void testOrderPrice_KeyboardDifferentMouse() throws BillException {
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "ASUS ROG", 40.00));
+        itemsOrdered.add(new EItem(EItem.item.Keyboard, "Logitech", 30.20));
+        itemsOrdered.add(new EItem(EItem.item.Keyboard, "Logitech", 55.68));
+
+        assertEquals(125.88, bill.getOrderPrice(itemsOrdered, user), 1e-2);
+    }
+
+    @Test
+    public void testOrderPrice_KeyboardEqualsMouse_case1() throws BillException {
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "ASUS ROG", 40.00));
+        itemsOrdered.add(new EItem(EItem.item.Keyboard, "Logitech", 30.20));
+
+        assertEquals(40.00, bill.getOrderPrice(itemsOrdered, user), 1e-2);
+    }
+
+    @Test
+    public void testOrderPrice_KeyboardEqualsMouse_case2() throws BillException {
+        // regala articolo meno caro tra tutti i prodotti (e.g. motherboard)
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "ASUS ROG", 40.00));
+        itemsOrdered.add(new EItem(EItem.item.Keyboard, "Logitech", 30.20));
+        itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-7 5800X", 444.44));
+        itemsOrdered.add(new EItem(EItem.item.Motherboard, "Gigabyte", 12.12));
+
+        assertEquals(514.64, bill.getOrderPrice(itemsOrdered, user), 1e-2);
+    }
+
+    @Test
+    public void testOrderPrice_KeyboardEqualsMouse_case3() throws BillException {
+        // verifica che sconti il processore, regali un mouse, e infine sottragga il prezzo del prodotto più economico tra tutti
+        // in questo caso è il mouse
+        for(int i=0; i!=11; i++){
+            itemsOrdered.add(new EItem(EItem.item.Mouse, "ASUS ROG", i + 20));  //255 - 275
+            itemsOrdered.add(new EItem(EItem.item.Keyboard, "Logitech", i + 30)); //385
+        }
+        for(int i=0; i<6; i++){
+            itemsOrdered.add(new EItem(EItem.item.Processor, "AMD Ryzen-7 5800X", i + 56)); //295 - 351
+        }
+
+        assertEquals(943, bill.getOrderPrice(itemsOrdered, user), 1e-2);
+    }
 }
 
 

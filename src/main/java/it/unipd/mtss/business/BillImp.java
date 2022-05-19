@@ -16,8 +16,12 @@ public class BillImp implements Bill {
         double tot = 0.0;
         int countProcessor = 0;
         int countMouse = 0;
+        int countKeyboard = 0;
+
         double minProcessor = Double.MAX_VALUE;
         double minMouse = Double.MAX_VALUE;
+        double minKeyboard = Double.MAX_VALUE;
+        double minMotherboard = Double.MAX_VALUE;
 
         if(itemsOrdered == null) {
             throw new BillException("Items ordered list cannot be null");
@@ -42,18 +46,37 @@ public class BillImp implements Bill {
                     minMouse = item.getPrice();
                 }
             }
+
+            if(item.getItemType() == EItem.item.Keyboard){
+                countKeyboard++;
+                if(item.getPrice() < minKeyboard){
+                    minKeyboard = item.getPrice();
+                }
+            }
+
+            if(item.getItemType() == EItem.item.Motherboard){
+                if(item.getPrice() < minMotherboard){
+                    minMotherboard = item.getPrice();
+                }
+            }
             // totale articoli in un elenco [issue #1]
             tot += item.getPrice();
         }
 
         // sconto 50% sui processori [issue #2]
         if(countProcessor > 5){
-            tot -= (minProcessor/2);
+            minProcessor = minProcessor/2;
+            tot -= minProcessor;
         }
 
         // Regalare il mouse meno caro [issue #3]
         if(countMouse > 10){
             tot -= minMouse;
+        }
+
+        // Articolo regalato nel caso #tastiere uguale #mouse [issue #4]
+        if(countMouse!=0 && countMouse == countKeyboard) {
+            tot -= Math.min(Math.min(Math.min(minKeyboard, minMouse), minMotherboard), minProcessor);
         }
 
         return tot;
