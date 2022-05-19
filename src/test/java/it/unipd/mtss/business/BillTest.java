@@ -94,6 +94,37 @@ public class BillTest {
 
         assertEquals(1324.37, bill.getOrderPrice(itemsOrdered, user), 1e-8);
     }
+
+    @Test
+    public void testOrderPrice_giftedMouse() throws BillException {
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "ASUS ROG", 40.00));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Logitech", 30.20));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Razer", 65.20));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Razer", 90.12));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Steelseries", 37.10));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Razer", 40.00));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Razer", 180.50));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Cooler Master", 93.00));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "ASUS ROG", 290.00));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Corsair", 47.90));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Logitech", 26.00));
+
+        assertEquals(914.02, bill.getOrderPrice(itemsOrdered, user), 1e-2);
+    }
+
+    @Test
+    public void testOrderPrice_notGiftedMouse() throws BillException {
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "ASUS ROG", 40.00));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Logitech", 30.20));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Razer", 65.20));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Razer", 90.12));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Steelseries", 37.10));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Razer", 40.00));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Razer", 180.50));
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Cooler Master", 93.00));
+
+        assertEquals(576.12, bill.getOrderPrice(itemsOrdered, user), 1e-2);
+    }
 }
 
 
