@@ -197,6 +197,13 @@ public class BillTest {
             assertEquals("Items max limit is 30", e.getMessage());
         }
     }
+
+    @Test
+    public void testOrderPrice_Fee() throws BillException {
+        itemsOrdered.add(new EItem(EItem.item.Mouse, "Logitech", 5.00));
+
+        assertEquals(7.00, bill.getOrderPrice(itemsOrdered, user), 1e-2);
+    }
 }
 
 
