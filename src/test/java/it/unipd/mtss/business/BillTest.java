@@ -184,6 +184,19 @@ public class BillTest {
 
         assertEquals(1000, bill.getOrderPrice(itemsOrdered, user), 1e-2);
     }
+
+    @Test
+    public void testOrderPrice_MaxLimit30Items() {
+        for(int i=0; i<31; i++) {
+            itemsOrdered.add(new EItem(EItem.item.Motherboard, "Gigabyte", 167.40));
+        }
+        try {
+            bill.getOrderPrice(itemsOrdered, user);
+        } catch(BillException e) {
+
+            assertEquals("Items max limit is 30", e.getMessage());
+        }
+    }
 }
 
 

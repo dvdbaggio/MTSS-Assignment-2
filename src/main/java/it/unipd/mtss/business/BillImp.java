@@ -84,6 +84,10 @@ public class BillImp implements Bill {
             tot = tot - (tot*0.1);
         }
 
+        if(itemsOrdered.size() > 30) {
+            throw new BillException("Items max limit is 30");
+        }
+
         return tot;
     }
 }
