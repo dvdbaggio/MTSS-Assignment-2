@@ -9,10 +9,18 @@ import it.unipd.mtss.business.exception.BillException;
 import it.unipd.mtss.model.EItem;
 import it.unipd.mtss.model.User;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public class BillImp implements Bill {
-    public double getOrderPrice(List<EItem> itemsOrdered, User user) throws BillException {
+
+    GiveawayImp giveaway;
+
+    public BillImp() {
+        giveaway = new GiveawayImp();
+    }
+
+    public double getOrderPrice(List<EItem> itemsOrdered, User user, LocalTime orderTime) throws BillException {
         double tot = 0.0;
         int countProcessor = 0;
         int countMouse = 0;
